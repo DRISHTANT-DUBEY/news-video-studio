@@ -1,2 +1,2 @@
-import Studio from '@/components/Studio';
-export default function Page(){return <Studio/>}
+import WorkspaceShell from '@/components/workspace/WorkspaceShell';
+export default function Page(){return <WorkspaceShell/>}
