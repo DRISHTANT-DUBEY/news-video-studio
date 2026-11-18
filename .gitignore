@@ -6,3 +6,5 @@ node_modules/
 *.mov
 *.webm
 .DS_Store
+
+*.tsbuildinfo

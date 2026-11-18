@@ -1,2 +1,75 @@
+@layer ui-sdk;
 @import "tailwindcss";
-body { background: #080d19; color: #f8fafc; font-family: Arial, Helvetica, sans-serif; }
+@import "@ui-sdk/core/web.css" layer(components);
+
+@theme {
+  --color-studio-bg: #080d19;
+  --color-studio-panel: #111827;
+  --color-studio-panel-alt: #0b1222;
+  --color-studio-line: #253248;
+  --color-studio-ink: #f8fafc;
+  --color-studio-muted: #94a3b8;
+  --color-studio-accent: #dc2626;
+  --color-studio-accent-soft: #7f1d1d;
+  --color-studio-safe: #22d3ee;
+  --font-sans: Arial, Helvetica, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+  --ui-background: #111827;
+  --ui-foreground: #f8fafc;
+  --ui-muted: #1f2937;
+  --ui-muted-foreground: #94a3b8;
+  --ui-border: #253248;
+  --ui-input: #475569;
+  --ui-primary: #dc2626;
+  --ui-primary-foreground: #ffffff;
+  --ui-destructive: #ef4444;
+  --ui-ring: #dc2626;
+  --ui-ring-border: #dc2626;
+  --ui-radius: 8px;
+  --ui-spacing: 4px;
+  --ui-font-sans: Arial, Helvetica, sans-serif;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  background: var(--color-studio-bg);
+  color: var(--color-studio-ink);
+  font-family: var(--font-sans);
+}
+
+[data-slot="resizable-panel"] {
+  padding: 0;
+}
+
+@layer components {
+  .studio-panel {
+    @apply rounded-xl border border-studio-line bg-studio-panel;
+  }
+
+  .studio-panel-heading {
+    @apply flex items-center justify-between border-b border-studio-line px-4 py-3 text-sm font-semibold;
+  }
+
+  .studio-hint {
+    @apply text-xs text-studio-muted;
+  }
+
+  .studio-control {
+    @apply rounded-lg border border-studio-line bg-studio-panel-alt px-3 py-2 text-sm text-studio-ink outline-none focus-visible:ring-2 focus-visible:ring-studio-accent;
+  }
+
+  .studio-button {
+    @apply rounded-lg bg-studio-accent px-4 py-2 text-sm font-semibold text-white outline-none transition-opacity focus-visible:ring-2 focus-visible:ring-white data-[disabled]:opacity-50;
+  }
+
+  .studio-button-secondary {
+    @apply rounded-lg border border-studio-line bg-studio-panel-alt px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-studio-accent data-[disabled]:opacity-50;
+  }
+}
