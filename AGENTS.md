@@ -16,9 +16,11 @@ Build a professional browser-first newsroom video editor. A journalist uploads f
 - Before marking work complete, run `npm run typecheck` and `npm run build`, plus relevant tests. If unable, state exactly why.
 - Test timeline synchronization, audio gain/ducking, captions and export against deterministic fixtures as these modules are added.
 - For third-party publishing, check current API requirements, permissions and account eligibility before implementing; require explicit per-destination confirmation.
+- Before using ui-sdk, follow the installed `ui-sdk` skill at `node_modules/@ui-sdk/core/skills/ui-sdk/SKILL.md`, read `node_modules/@ui-sdk/react/docs/llms.txt`, and search `docs/core.md` by heading plus `docs/rendering.md` when building a primitive. UI SDK is pinned to a beta and stays behind `src/components/ui/*` wrappers.
+- Backend integrations are wired later. Keep files, network calls and storage adapters behind `src/services/*` interfaces; UI and stores must not import backend clients directly.
 
-## First assignment
-Investigate and fix the Vercel preview build failure for `feature/broadcast-workspace`. A reported failure was at commit `3c983fc`, an early intermediate commit when imported components may not yet have existed. Check the *latest* branch head and current Vercel logs before concluding the failure persists. Run build locally, repair genuine failures, and update draft PR #1. Do not merge without a passing build.
+## First assignment — resolved
+The reported Vercel failures at `3c983fc` and `eeabfd0` were intermediate commits missing imported workspace components. The latest `feature/broadcast-workspace` head `b0070ed` built READY on Vercel, and `main` production builds are READY. Current work rebuilds the M1–M5 UI on pinned UI SDK behind local wrappers in `feature/ui-sdk-workspace`; keep PR #1 draft until verification is complete. Do not merge without a passing build and explicit authorization.
 
 ## Useful commands
 ```bash

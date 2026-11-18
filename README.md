@@ -1,33 +1,48 @@
 # NewsForge Studio
 
-Starter code for a **hybrid browser-first + cloud news video assembly** platform.
+Browser-first newsroom video editor UI. This branch rebuilds the editor on Vercel's **UI SDK** (pinned beta `0.1.0-beta.10`) with serializable state and clean seams for a backend that will be connected later.
 
 ## Run
 
 ```bash
 npm install
 npm run dev
+npm run typecheck
+npm test
+npm run build
 ```
 
-Open http://localhost:3000.
+## Implemented UI
+- Resizable broadcast workspace: media/audio/script/brand dock, Program Monitor, Inspector, multi-track timeline.
+- Local video import with object-URL registry; Canvas preview with frame-driven ticker, safe-area guides and caption overlay.
+- Editable timeline built on `@ui-sdk/core` `createSpans`: create, move, trim, split, delete, lock/mute tracks, zoom, frame timecode, keyboard editing, undo/redo.
+- Inspector for clip, ticker, audio levels and ducking, captions and export settings.
+- Script segments, caption editing at the playhead and real local SRT download.
+- Deterministic `RenderSpec` v1 with fingerprint, shown in an export dialog.
+- Accessible primitives from UI SDK behind `src/components/ui/*`; custom timeline primitive in `src/components/workspace/primitives/`.
+- Backend seams in `src/services/index.ts` (`configureServices`, `getServices`, `hasRenderer`, `hasStorage`). No client imports backend implementations.
 
-## Implemented
-- Next.js / React / Tailwind studio layout
-- Local video selection and Canvas-based aspect-ratio-preserving preview
-- Time-synchronized, dynamic breaking-news ticker
-- Local / cloud / auto mode UI (selection only)
-- Shared TypeScript render contracts
+## Not implemented / deliberately disabled
+- MP4 encoding, WebCodecs/FFmpeg.wasm, Cloud Run renderer and job queue.
+- Real audio mixing/playback, MediaRecorder capture and waveform rendering.
+- Firebase auth/storage, persistence to a server, autosave beyond local state.
+- OAuth connections, scheduling and publication. Export and Publish controls are visibly disabled until engines/accounts exist.
 
-## Not yet implemented
-- Final MP4 export, intro/outro stitching, audio mixing
-- Browser WebCodecs / FFmpeg.wasm encoder
-- Firebase Auth, Storage, Firestore and Cloud Run job submission
-- User accounts, persistence, test suite, CI
+No uploaded or imported media leaves the browser. No secrets or credentials are stored in source or browser storage.
 
-The export control is intentionally disabled until the pipeline works. No uploaded video leaves the device in this starter.
+## Structure
 
-## Planned architecture
+```
+src/app/                     App Router entry and global Tailwind/UI SDK layers
+src/components/ui/           local wrappers around pinned UI SDK components
+src/components/workspace/    workspace, monitor, inspector, timeline, panels
+src/components/workspace/primitives/  custom createSpans timeline primitive
+src/lib/                     serializable types, pure timeline/ticker/audio/caption/spec logic
+src/stores/                  Zustand editor state (undo/redo) and transient UI state
+src/services/                backend contracts and configuration seam
+src/test/                    Vitest/jsdom setup
+```
 
-`Next.js UI → shared render specification → local WebCodecs/FFmpeg.wasm engine OR Firebase Storage → Cloud Run FFmpeg worker → MP4 download`
+## Backend wiring later
 
-For cloud setup, use a private Firebase project and service-account credentials managed outside Git. Do not commit secrets.
+Implement the interfaces in `src/services/index.ts` and call `configureServices(...)` once at startup. UI and stores never import service implementations directly. The export dialog uses `hasRenderer()` to show accurate status; render jobs stay `idle` until a real renderer exists. Keep all timeline/render data serializable — large binary media belongs in the object-URL registry or a storage adapter, never in Zustand.

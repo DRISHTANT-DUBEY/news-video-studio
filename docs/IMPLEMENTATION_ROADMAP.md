@@ -2,6 +2,12 @@
 
 This is a milestone checklist, not a claim of completed features. Check repository and open PRs before starting.
 
+## Status update — 2026-11-18
+- Priority 0 is resolved: the latest `feature/broadcast-workspace` head `b0070ed` had a READY Vercel build; the failures at `3c983fc`/`eeabfd0` were missing imported components in intermediate commits.
+- `feature/ui-sdk-workspace` rebuilds the **UI for M1–M5** on pinned Vercel UI SDK `0.1.0-beta.10` behind local wrappers. Typecheck, 21 tests and production build pass; local dev smoke test returns HTTP 200.
+- UI delivered: resizable workspace, local import + Canvas ticker monitor, inspector, editable createSpans timeline, audio mixer controls, script/captions with SRT, export dialog with deterministic render spec.
+- Engines and integrations remain unimplemented and visibly disabled: MP4 encoding, audio playback/capture, Firebase, Cloud Run, OAuth and publishing. Implement them through `src/services/index.ts`.
+
 ## Priority 0: Stabilize existing M1 PR
 - [ ] Checkout `feature/broadcast-workspace`; inspect latest branch head and draft PR #1.
 - [ ] Run `npm install`, `npm run typecheck`, `npm run build`.
